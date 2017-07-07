@@ -18,5 +18,5 @@ brew install --HEAD crisidev/homebrew-chunkwm/chunkwm
 
 ## Install all plugins
 ```
-brew install --with-transparency --with-template
+brew install --with-transparency --with-ffm
 ```
