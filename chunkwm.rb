@@ -1,8 +1,8 @@
 class Chunkwm < Formula
   desc "Tiling window manager for MacOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.10.tar.gz"
-  sha256 "ac12e977368873de6f2533648bc0c5e4da09adcc2d3fa8fe67178bb2bf4a796a"
+  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.11.tar.gz"
+  sha256 "6d2998a0cec98e5e9c5a0f29ae6a067065bab42317c4da28c255a9c742ac44aa"
 
   head do
     url "https://github.com/koekeishiya/chunkwm.git"
@@ -61,9 +61,10 @@ class Chunkwm < Formula
     Plugins are installed into #{share}/chunkwm_plusing folder.
     To allow plugins to load properly you have two possibilites:
       * Edit ~/.chunkwmrc and change line
-          chunkc plugin_dir ~/.chunkwm_plugins
+          chunkc core::plugin_dir ~/.chunkwm_plugins
         into
           chunkc plugin_dir #{share}/chunkwm_plugins
+          chunkc core::plugin_dir #{share}/chunkwm_plugins
       * Link plugins into your home directory
           ln -sf #{share}/chunkwm_plugins ~/.chunkwm_plugins
 
