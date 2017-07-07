@@ -1,15 +1,16 @@
 class Chunkwm < Formula
   desc "Tiling window manager for MacOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/core-0.1.0.tar.gz"
-  sha256 "12d34abe50cb01c9199c59c11a3111d98783cbdfb589aa6b3b173eab4fd78fb3"
+  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.10.tar.gz"
+  sha256 "ac12e977368873de6f2533648bc0c5e4da09adcc2d3fa8fe67178bb2bf4a796a"
 
   head do
     url "https://github.com/koekeishiya/chunkwm.git"
   end
 
-  option "with-template", "Build template plugin. Default is to build tiling, ffm and border plugins"
-  option "with-transparency", "Build transparency plugin. Default is to build tiling, ffm and border plugins"
+  option "with-ffm", "Build focus-follow-mouse plugin."
+  option "with-template", "Build template plugin."
+  option "with-transparency", "Build transparency plugin."
 
   depends_on :xcode => ["8", :build]
 
@@ -20,10 +21,10 @@ class Chunkwm < Formula
 
     # install chunkwm
     system "make", "install"
-    prefix.install "#{buildpath}/bin/chunkwm"
+    bin.install "#{buildpath}/bin/chunkwm"
     (share/"examples").install "#{buildpath}/examples/chunkwmrc"
-    # install chunkc
 
+    # install chunkc
     Dir.chdir("#{buildpath}/src/chunkc")
     system "make"
     bin.install "#{buildpath}/src/chunkc/bin/chunkc"
@@ -32,7 +33,6 @@ class Chunkwm < Formula
     Dir.chdir("#{buildpath}/src/plugins/tiling")
     system "make", "install"
     (share/"chunkwm_plugins").install "#{buildpath}/plugins/tiling.so"
-    (share/"examples").install "#{buildpath}/src/plugins/tiling/examples/chwmtilingrc"
     (share/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
 
     # install border plugin
@@ -41,9 +41,9 @@ class Chunkwm < Formula
     (share/"chunkwm_plugins").install "#{buildpath}/plugins/border.so"
 
     # install ffm plugin
-    Dir.chdir("#{buildpath}/src/plugins/ffm")
-    system "make", "install"
-    (share/"chunkwm_plugins").install "#{buildpath}/plugins/ffm.so"
+    Dir.chdir("#{buildpath}/src/plugins/ffm") if build.with? "ffm"
+    system "make", "install" if build.with? "ffm"
+    (share/"chunkwm_plugins").install "#{buildpath}/plugins/ffm.so" if build.with? "ffm"
 
     # install template plugin
     Dir.chdir("#{buildpath}/src/plugins/template") if build.with? "template"
@@ -59,7 +59,6 @@ class Chunkwm < Formula
   def caveats; <<-EOS.undent
     Copy the example configs from #{share}/examples into your home directory:
       cp #{share}/examples/chunkwmrc ~/.chunkwmrc
-      cp #{share}/examples/chwmtilingrc ~/.chwmtilingrc
 
     Plugins are installed into #{share}/chunkwm_plusing folder.
     To allow plugins to load properly you have two possibilites:
@@ -94,7 +93,7 @@ class Chunkwm < Formula
       <string>com.koekeishiya.chunkwm</string>
       <key>ProgramArguments</key>
       <array>
-            <string>#{prefix}/chunkwm</string>
+            <string>#{prefix}/bin/chunkwm</string>
       </array>
         <key>EnvironmentVariables</key>
         <dict>
