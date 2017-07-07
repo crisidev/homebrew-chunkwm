@@ -9,7 +9,6 @@ class Chunkwm < Formula
   end
 
   option "with-ffm", "Build focus-follow-mouse plugin."
-  option "with-template", "Build template plugin."
   option "with-transparency", "Build transparency plugin."
 
   depends_on :xcode => ["8", :build]
@@ -41,19 +40,18 @@ class Chunkwm < Formula
     (share/"chunkwm_plugins").install "#{buildpath}/plugins/border.so"
 
     # install ffm plugin
-    Dir.chdir("#{buildpath}/src/plugins/ffm") if build.with? "ffm"
-    system "make", "install" if build.with? "ffm"
-    (share/"chunkwm_plugins").install "#{buildpath}/plugins/ffm.so" if build.with? "ffm"
-
-    # install template plugin
-    Dir.chdir("#{buildpath}/src/plugins/template") if build.with? "template"
-    system "make", "install" if build.with? "template"
-    (share/"chunkwm_plugins").install "#{buildpath}/plugins/template.so" if build.with? "template"
+    if build.with? "ffm"
+      Dir.chdir("#{buildpath}/src/plugins/ffm")
+      system "make", "install"
+      (share/"chunkwm_plugins").install "#{buildpath}/plugins/ffm.so"
+    end
 
     # install transparency plugin
-    Dir.chdir("#{buildpath}/src/plugins/transparency") if build.with? "transparency"
-    system "make", "install" if build.with? "transparency"
-    (share/"chunkwm_plugins").install "#{buildpath}/plugins/transparency.so" if build.with? "transparency"
+    if build.with? "transparency"
+      Dir.chdir("#{buildpath}/src/plugins/transparency")
+      system "make", "install"
+      (share/"chunkwm_plugins").install "#{buildpath}/plugins/transparency.so"
+    end
   end
 
   def caveats; <<-EOS.undent
