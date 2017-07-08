@@ -83,6 +83,7 @@ class Chunkwm < Formula
 
       The first time chunkwm-core is ran, it will request access to the accessibility API.
       After access has been granted, the application must be restarted.
+      NOTE: accessibility API needs to be granted every time you upgrade chunkwm core.
 
       The chunkwm-tiling plugin requires 'displays have separate spaces' to be enabled.
 
