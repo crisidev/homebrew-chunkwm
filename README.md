@@ -8,15 +8,20 @@ brew tap crisidev/homebrew-chunkwm
 
 ## Install latest stable version
 ```
-brew install crisidev/homebrew-chunkwm/chunkwm
+brew install chunkwm
 ```
 
 ## Install from git repo
 ```
-brew install --HEAD crisidev/homebrew-chunkwm/chunkwm
+brew install --HEAD chunkwm
 ```
 
 ## Install all plugins
 ```
-brew install --with-transparency --with-ffm
+brew install --with-transparency --with-ffm chunkwm
+```
+
+## Do not install border or tiling plugins
+```
+brew install --without-border --without-tiling --with-ffm chunkwm
 ```
