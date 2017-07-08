@@ -10,6 +10,8 @@ class Chunkwm < Formula
 
   option "with-ffm", "Build focus-follow-mouse plugin."
   option "with-transparency", "Build transparency plugin."
+  option "without-border", "Do not build border plugin."
+  option "without-tiling", "Do not build tiling plugin."
 
   depends_on :xcode => ["8", :build]
 
@@ -29,15 +31,19 @@ class Chunkwm < Formula
     bin.install "#{buildpath}/src/chunkc/bin/chunkc"
 
     # install tiling plugin
-    Dir.chdir("#{buildpath}/src/plugins/tiling")
-    system "make", "install"
-    (share/"chunkwm_plugins").install "#{buildpath}/plugins/tiling.so"
-    (share/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
+    if not build.without? "tiling"
+      Dir.chdir("#{buildpath}/src/plugins/tiling")
+      system "make", "install"
+      (share/"chunkwm_plugins").install "#{buildpath}/plugins/tiling.so"
+      (share/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
+    end
 
     # install border plugin
-    Dir.chdir("#{buildpath}/src/plugins/border")
-    system "make", "install"
-    (share/"chunkwm_plugins").install "#{buildpath}/plugins/border.so"
+    if not build.without? "border"
+      Dir.chdir("#{buildpath}/src/plugins/border")
+      system "make", "install"
+      (share/"chunkwm_plugins").install "#{buildpath}/plugins/border.so"
+    end
 
     # install ffm plugin
     if build.with? "ffm"
@@ -55,30 +61,38 @@ class Chunkwm < Formula
   end
 
   def caveats; <<-EOS.undent
-    Copy the example configs from #{share}/examples into your home directory:
-      cp #{share}/examples/chunkwmrc ~/.chunkwmrc
+    # Chunkwm build with:
+      * tiling: #{not build.without? "tiling"}
+      * border: #{not build.without? "border"}
+      * ffm: #{build.with? "ffm"}
+      * transparency: #{build.with? "transparency"}
 
-    Plugins are installed into #{share}/chunkwm_plusing folder.
-    To allow plugins to load properly you have two possibilites:
-      * Edit ~/.chunkwmrc and change line
-          chunkc core::plugin_dir ~/.chunkwm_plugins
-        into
-          chunkc plugin_dir #{share}/chunkwm_plugins
-          chunkc core::plugin_dir #{share}/chunkwm_plugins
-      * Link plugins into your home directory
-          ln -sf #{share}/chunkwm_plugins ~/.chunkwm_plugins
+    # Installation Instructions:
+      Copy the example configs from #{share}/examples into your home directory:
+        cp #{share}/examples/chunkwmrc ~/.chunkwmrc
 
-    The first time chunkwm-core is ran, it will request access to the accessibility API.
-    After access has been granted, the application must be restarted.
+      Plugins are installed into #{share}/chunkwm_plusing folder.
+      To allow plugins to load properly you have two possibilites:
+        * Edit ~/.chunkwmrc and change line
+            chunkc core::plugin_dir ~/.chunkwm_plugins
+          into
+            chunkc plugin_dir #{share}/chunkwm_plugins
+            chunkc core::plugin_dir #{share}/chunkwm_plugins
+        * Link plugins into your home directory
+            ln -sf #{share}/chunkwm_plugins ~/.chunkwm_plugins
 
-    The chunkwm-tiling plugin requires 'displays have separate spaces' to be enabled.
+      The first time chunkwm-core is ran, it will request access to the accessibility API.
+      After access has been granted, the application must be restarted.
+      NOTE: accessibility API needs to be granted every time you upgrade chunkwm core.
 
-    For keybindings install and configure https://github.com/koekeishiya/khd.
-    Brew formula is available: brew install koekeishiya/formulae/khd
+      The chunkwm-tiling plugin requires 'displays have separate spaces' to be enabled.
 
-    Copy the khd example config from #{prefix}/khdrc into your home directory:
-      cp #{share}/examples/khdrc ~/.khdrc
-    EOS
+      For keybindings install and configure https://github.com/koekeishiya/khd.
+      Brew formula is available: brew install koekeishiya/formulae/khd
+
+      Copy the khd example config from #{prefix}/khdrc into your home directory:
+        cp #{share}/examples/khdrc ~/.khdrc
+      EOS
   end
 
   plist_options :startup => false
