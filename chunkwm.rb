@@ -71,7 +71,7 @@ class Chunkwm < Formula
       Copy the example configs from #{share}/examples into your home directory:
         cp #{share}/examples/chunkwmrc ~/.chunkwmrc
 
-      Plugins are installed into #{share}/chunkwm_plusing folder.
+      Plugins are installed into #{share}/chunkwm_plugins folder.
       To allow plugins to load properly you have two possibilites:
         * Edit ~/.chunkwmrc and change line
             chunkc core::plugin_dir ~/.chunkwm_plugins
