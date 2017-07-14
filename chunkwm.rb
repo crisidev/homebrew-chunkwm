@@ -76,7 +76,6 @@ class Chunkwm < Formula
         * Edit ~/.chunkwmrc and change line
             chunkc core::plugin_dir ~/.chunkwm_plugins
           into
-            chunkc plugin_dir #{share}/chunkwm_plugins
             chunkc core::plugin_dir #{share}/chunkwm_plugins
         * Link plugins into your home directory
             ln -sf #{share}/chunkwm_plugins ~/.chunkwm_plugins
