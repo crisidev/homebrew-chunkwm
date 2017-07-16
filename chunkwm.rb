@@ -1,8 +1,8 @@
 class Chunkwm < Formula
   desc "Tiling window manager for MacOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.21.tar.gz"
-  sha256 "901d0d487852cd379db8d6801033a084541d712b5039346c1a4fe946401c180b"
+  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.23.tar.gz"
+  sha256 "9e46be9c7f90ede6b84178447e99aac4f41eb72db036785a44ba7e52dd66ba5e"
 
   head do
     url "https://github.com/koekeishiya/chunkwm.git"
@@ -12,8 +12,6 @@ class Chunkwm < Formula
   option "with-transparency", "Build transparency plugin."
   option "without-border", "Do not build border plugin."
   option "without-tiling", "Do not build tiling plugin."
-
-  depends_on :xcode => ["8", :build]
 
   def install
     # create plugins and example directories
