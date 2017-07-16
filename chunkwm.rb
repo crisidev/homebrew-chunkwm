@@ -1,8 +1,8 @@
 class Chunkwm < Formula
   desc "Tiling window manager for MacOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.23.tar.gz"
-  sha256 "9e46be9c7f90ede6b84178447e99aac4f41eb72db036785a44ba7e52dd66ba5e"
+  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.24.tar.gz"
+  sha256 "5e844e7a9e7b88fb2eb016f3b9fca5a2fce730eabdba2028c72b4220a5aee727"
 
   head do
     url "https://github.com/koekeishiya/chunkwm.git"
@@ -29,7 +29,7 @@ class Chunkwm < Formula
     bin.install "#{buildpath}/src/chunkc/bin/chunkc"
 
     # install tiling plugin
-    if not build.without? "tiling"
+    if build.with? "tiling"
       Dir.chdir("#{buildpath}/src/plugins/tiling")
       system "make", "install"
       (share/"chunkwm_plugins").install "#{buildpath}/plugins/tiling.so"
@@ -37,7 +37,7 @@ class Chunkwm < Formula
     end
 
     # install border plugin
-    if not build.without? "border"
+    if build.with? "border"
       Dir.chdir("#{buildpath}/src/plugins/border")
       system "make", "install"
       (share/"chunkwm_plugins").install "#{buildpath}/plugins/border.so"
@@ -60,8 +60,8 @@ class Chunkwm < Formula
 
   def caveats; <<-EOS.undent
     # Chunkwm build with:
-      * tiling: #{not build.without? "tiling"}
-      * border: #{not build.without? "border"}
+      * tiling: #{build.with? "tiling"}
+      * border: #{build.with? "border"}
       * ffm: #{build.with? "ffm"}
       * transparency: #{build.with? "transparency"}
 
@@ -103,7 +103,7 @@ class Chunkwm < Formula
       <string>com.koekeishiya.chunkwm</string>
       <key>ProgramArguments</key>
       <array>
-            <string>#{prefix}/bin/chunkwm</string>
+            <string>#{bin}/chunkwm</string>
       </array>
         <key>EnvironmentVariables</key>
         <dict>
