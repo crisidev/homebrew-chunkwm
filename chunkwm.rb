@@ -1,8 +1,8 @@
 class Chunkwm < Formula
   desc "Tiling window manager for MacOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.24.tar.gz"
-  sha256 "5e844e7a9e7b88fb2eb016f3b9fca5a2fce730eabdba2028c72b4220a5aee727"
+  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.25.tar.gz"
+  sha256 "ee2b6b90a5c53dc5812a1d3cc94b61594ec53a4b3462412426e5744599afcfa3"
 
   head do
     url "https://github.com/koekeishiya/chunkwm.git"
