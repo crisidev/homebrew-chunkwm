@@ -1,98 +1,64 @@
 class Chunkwm < Formula
-  desc "Tiling window manager for MacOS based on plugin architecture"
+  desc "Tiling window manager for macOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
   url "https://github.com/koekeishiya/chunkwm/archive/v0.2.30.tar.gz"
   sha256 "224d126dab832e568466242d8755b8364577c6b07d028122efa638e9dc67edfe"
-
-  head do
-    url "https://github.com/koekeishiya/chunkwm.git"
-  end
-
-  option "with-ffm", "Build focus-follow-mouse plugin."
-  option "with-transparency", "Build transparency plugin."
-  option "without-border", "Do not build border plugin."
+  head "https://github.com/koekeishiya/chunkwm.git"
+  
   option "without-tiling", "Do not build tiling plugin."
+  option "without-ffm", "Do not build focus-follow-mouse plugin."
+  option "without-border", "Do not build border plugin."
+  option "with-transparency", "Build transparency plugin."
+
+  depends_on :macos => :el_capitan
 
   def install
-    # create plugins and example directories
-    (share/"chunkwm_plugins").mkpath
-    (share/"examples").mkpath
-
-    # install chunkwm
     system "make", "install"
+    inreplace "#{buildpath}/examples/chunkwmrc", "~/.chunkwm_plugins", "#{opt_pkgshare}/plugins"
     bin.install "#{buildpath}/bin/chunkwm"
-    (share/"examples").install "#{buildpath}/examples/chunkwmrc"
+    (pkgshare/"examples").install "#{buildpath}/examples/chunkwmrc"
 
-    # install chunkc
-    Dir.chdir("#{buildpath}/src/chunkc")
-    system "make"
+    system "make", "--directory", "src/chunkc"
     bin.install "#{buildpath}/src/chunkc/bin/chunkc"
 
-    # install tiling plugin
     if build.with? "tiling"
-      Dir.chdir("#{buildpath}/src/plugins/tiling")
-      system "make", "install"
-      (share/"chunkwm_plugins").install "#{buildpath}/plugins/tiling.so"
-      (share/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
+      system "make", "install", "--directory", "src/plugins/tiling"
+      (pkgshare/"plugins").install "#{buildpath}/plugins/tiling.so"
+      (pkgshare/"examples").install "#{buildpath}/src/plugins/tiling/examples/khdrc"
     end
 
-    # install border plugin
-    if build.with? "border"
-      Dir.chdir("#{buildpath}/src/plugins/border")
-      system "make", "install"
-      (share/"chunkwm_plugins").install "#{buildpath}/plugins/border.so"
-    end
-
-    # install ffm plugin
     if build.with? "ffm"
-      Dir.chdir("#{buildpath}/src/plugins/ffm")
-      system "make", "install"
-      (share/"chunkwm_plugins").install "#{buildpath}/plugins/ffm.so"
+      system "make", "install", "--directory", "src/plugins/ffm"
+      (pkgshare/"plugins").install "#{buildpath}/plugins/ffm.so"
     end
 
-    # install transparency plugin
+    if build.with? "border"
+      system "make", "install", "--directory", "src/plugins/border"
+      (pkgshare/"plugins").install "#{buildpath}/plugins/border.so"
+    end
+
     if build.with? "transparency"
-      Dir.chdir("#{buildpath}/src/plugins/transparency")
-      system "make", "install"
-      (share/"chunkwm_plugins").install "#{buildpath}/plugins/transparency.so"
+      system "make", "install", "--directory", "src/plugins/transparency"
+      (pkgshare/"plugins").install "#{buildpath}/plugins/transparency.so"
     end
   end
 
   def caveats; <<-EOS.undent
-    # Chunkwm build with:
-      * tiling: #{build.with? "tiling"}
-      * border: #{build.with? "border"}
-      * ffm: #{build.with? "ffm"}
-      * transparency: #{build.with? "transparency"}
+    Copy the example configuration into your home directory:
+      cp #{opt_pkgshare}/examples/chunkwmrc ~/.chunkwmrc
 
-    # Installation Instructions:
-      Copy the example configs from #{share}/examples into your home directory:
-        cp #{share}/examples/chunkwmrc ~/.chunkwmrc
+    Opening chunkwm will prompt for Accessibility API permissions. After access
+    has been granted, the application must be restarted.
+      brew services restart chunkwm
 
-      Plugins are installed into #{share}/chunkwm_plugins folder.
-      To allow plugins to load properly you have two possibilites:
-        * Edit ~/.chunkwmrc and change line
-            chunkc core::plugin_dir ~/.chunkwm_plugins
-          into
-            chunkc core::plugin_dir #{share}/chunkwm_plugins
-        * Link plugins into your home directory
-            ln -sf #{share}/chunkwm_plugins ~/.chunkwm_plugins
-
-      The first time chunkwm-core is ran, it will request access to the accessibility API.
-      After access has been granted, the application must be restarted.
-      NOTE: accessibility API needs to be granted every time you upgrade chunkwm core.
-
-      The chunkwm-tiling plugin requires 'displays have separate spaces' to be enabled.
-
-      For keybindings install and configure https://github.com/koekeishiya/khd.
-      Brew formula is available: brew install koekeishiya/formulae/khd
-
-      Copy the khd example config from #{prefix}/khdrc into your home directory:
-        cp #{share}/examples/khdrc ~/.khdrc
-      EOS
+    This has to be done after every update to chunkwm, unless you codesign the
+    binary with self-signed certificate before restarting
+      Create code signing certificate named "chunkwm-cert" using Keychain Access.app
+      codesign -fs "chunkwm-cert" #{opt_bin}/chunkwm
+    EOS
   end
 
-  plist_options :startup => false
+  plist_options :manual => "chunkwm"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -100,30 +66,30 @@ class Chunkwm < Formula
     <plist version="1.0">
     <dict>
       <key>Label</key>
-      <string>com.koekeishiya.chunkwm</string>
+      <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-            <string>#{bin}/chunkwm</string>
+        <string>#{opt_bin}/chunkwm</string>
       </array>
-        <key>EnvironmentVariables</key>
-        <dict>
+      <key>EnvironmentVariables</key>
+      <dict>
         <key>PATH</key>
-        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-        </dict>
+        <string>#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+      </dict>
       <key>RunAtLoad</key>
       <true/>
       <key>KeepAlive</key>
       <true/>
-        <key>StandardOutPath</key>
-        <string>/tmp/chunkwm.out</string>
-        <key>StandardErrorPath</key>
-        <string>/tmp/chunkwm.err</string>
+      <key>StandardOutPath</key>
+      <string>#{var}/log/chunkwm.log</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/log/chunkwm.log</string>
     </dict>
     </plist>
-    EOS
+  EOS
   end
 
   test do
-    system "#{prefix}/chunkwm", "--version"
+    assert_match "chunkwm #{version}", shell_output("#{bin}/chunkwm --version")
   end
 end
