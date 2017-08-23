@@ -55,6 +55,8 @@ class Chunkwm < Formula
     binary with self-signed certificate before restarting
       Create code signing certificate named "chunkwm-cert" using Keychain Access.app
       codesign -fs "chunkwm-cert" #{opt_bin}/chunkwm
+
+    NOTE: plugins folder has been moved to #{opt_pkgshare}/plugins
     EOS
   end
 
