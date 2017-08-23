@@ -48,7 +48,7 @@ binary with self-signed certificate before restarting
 Create code signing certificate named "chunkwm-cert" using Keychain Access.app:
 
 * Open Keychain Access.app
-* From menu select ```Keychain Access -> Certificate Assistant -> Create a certificate
+* From menu select ```Keychain Access -> Certificate Assistant -> Create a certificate```
 * Fill the certificate form:
     * Name: chunkwm-cert
     * Identity Type: Self Signed Root
