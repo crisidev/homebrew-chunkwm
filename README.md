@@ -15,6 +15,8 @@ Chunkwm worsk with MacOSX >= 10.11
 
 ## Brew options
 ```
+--with-logging
+	Redirect stdout and stderr to log files
 --with-transparency
 	Build transparency plugin.
 --without-border
@@ -70,6 +72,13 @@ Or, if you don't want/need a background service you can just run:
 
 ```  
 chunkwm
+```
+
+### Logging
+If the formula has been built with ```--with-logging```, logs will be found in
+
+```
+/usr/local/var/log/chunwm/chunkwm.[out|err].log
 ```
 
 ## Usage examples

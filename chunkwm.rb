@@ -9,10 +9,12 @@ class Chunkwm < Formula
   option "without-ffm", "Do not build focus-follow-mouse plugin."
   option "without-border", "Do not build border plugin."
   option "with-transparency", "Build transparency plugin."
+  option "with-logging", "Redirect stdout and stderr to log files"
 
   depends_on :macos => :el_capitan
 
   def install
+    (var/"log/chunkwm").mkpath
     system "make", "install"
     inreplace "#{buildpath}/examples/chunkwmrc", "~/.chunkwm_plugins", "#{opt_pkgshare}/plugins"
     bin.install "#{buildpath}/bin/chunkwm"
@@ -56,39 +58,69 @@ class Chunkwm < Formula
       Create code signing certificate named "chunkwm-cert" using Keychain Access.app
       codesign -fs "chunkwm-cert" #{opt_bin}/chunkwm
 
+    If the formula has been built with --with-logging, logs will be found in
+      #{var}/log/chunwm/chunkwm.[out|err].log
+
     NOTE: plugins folder has been moved to #{opt_pkgshare}/plugins
     EOS
   end
 
   plist_options :manual => "chunkwm"
 
-  def plist; <<-EOS.undent
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-      <key>Label</key>
-      <string>#{plist_name}</string>
-      <key>ProgramArguments</key>
-      <array>
-        <string>#{opt_bin}/chunkwm</string>
-      </array>
-      <key>EnvironmentVariables</key>
-      <dict>
-        <key>PATH</key>
-        <string>#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-      </dict>
-      <key>RunAtLoad</key>
-      <true/>
-      <key>KeepAlive</key>
-      <true/>
-      <key>StandardOutPath</key>
-      <string>#{var}/log/chunkwm.log</string>
-      <key>StandardErrorPath</key>
-      <string>#{var}/log/chunkwm.log</string>
-    </dict>
-    </plist>
-  EOS
+  if build.with? "logging"
+      def plist; <<-EOS.undent
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/chunkwm</string>
+          </array>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>PATH</key>
+            <string>#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+          </dict>
+          <key>RunAtLoad</key>
+          <true/>
+          <key>KeepAlive</key>
+          <true/>
+          <key>StandardOutPath</key>
+          <string>#{var}/log/chunkwm/chunkwm.out.log</string>
+          <key>StandardErrorPath</key>
+          <string>#{var}/log/chunkwm/chunkwm.err.log</string>
+        </dict>
+        </plist>
+        EOS
+      end
+  else
+      def plist; <<-EOS.undent
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/chunkwm</string>
+          </array>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>PATH</key>
+            <string>#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+          </dict>
+          <key>RunAtLoad</key>
+          <true/>
+          <key>KeepAlive</key>
+          <true/>
+        </dict>
+        </plist>
+        EOS
+      end
   end
 
   test do
