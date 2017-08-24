@@ -59,7 +59,7 @@ class Chunkwm < Formula
       codesign -fs "chunkwm-cert" #{opt_bin}/chunkwm
 
     If the formula has been built with --with-logging, logs will be found in
-      #{var}/log/chunwm/chunkwm.[out|err].log
+      #{var}/log/chunkwm/chunkwm.[out|err].log
 
     NOTE: plugins folder has been moved to #{opt_pkgshare}/plugins
     EOS
