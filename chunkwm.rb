@@ -1,14 +1,13 @@
 class Chunkwm < Formula
   desc "Tiling window manager for macOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.30.tar.gz"
-  sha256 "224d126dab832e568466242d8755b8364577c6b07d028122efa638e9dc67edfe"
+  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.31.tar.gz"
+  sha256 "26f634646118738d52ca8d4824abd8e05d0062fa1c744504aca3cbf4e7884053"
   head "https://github.com/koekeishiya/chunkwm.git"
-  
+
   option "without-tiling", "Do not build tiling plugin."
   option "without-ffm", "Do not build focus-follow-mouse plugin."
   option "without-border", "Do not build border plugin."
-  option "with-transparency", "Build transparency plugin."
   option "with-logging", "Redirect stdout and stderr to log files"
 
   depends_on :macos => :el_capitan
@@ -39,10 +38,6 @@ class Chunkwm < Formula
       (pkgshare/"plugins").install "#{buildpath}/plugins/border.so"
     end
 
-    if build.with? "transparency"
-      system "make", "install", "--directory", "src/plugins/transparency"
-      (pkgshare/"plugins").install "#{buildpath}/plugins/transparency.so"
-    end
   end
 
   def caveats; <<-EOS.undent

@@ -1,5 +1,5 @@
 # homebrew-chunkwm
-Homebrew Tap for Chunkwm tiling window manage (https://github.com/koekeishiya/chunkwm)
+Homebrew Tap for Chunkwm tiling window manager (https://github.com/koekeishiya/chunkwm)
 
 **NOTE: plugins folder has been moved to /usr/local/opt/chunkwm/share/chunkwm/plugins**
 
@@ -11,14 +11,12 @@ Homebrew Tap for Chunkwm tiling window manage (https://github.com/koekeishiya/ch
 
 
 ## Supported OSX versions
-Chunkwm worsk with MacOSX >= 10.11
+Chunkwm works with MacOSX >= 10.11
 
 ## Brew options
 ```
 --with-logging
 	Redirect stdout and stderr to log files
---with-transparency
-	Build transparency plugin.
 --without-border
 	Do not build border plugin.
 --without-ffm
@@ -58,7 +56,7 @@ Create code signing certificate named "chunkwm-cert" using Keychain Access.app:
 
 Sign the binary:
 
-```  
+```
 codesign -fs "chunkwm-cert" /usr/local/opt/chunkwm/bin/chunkwm
 ```
 
@@ -70,7 +68,7 @@ brew services start crisidev/chunkwm/chunkwm
 
 Or, if you don't want/need a background service you can just run:
 
-```  
+```
 chunkwm
 ```
 
