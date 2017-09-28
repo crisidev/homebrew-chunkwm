@@ -16,7 +16,9 @@ Chunkwm works with MacOSX >= 10.11
 ## Brew options
 ```
 --with-logging
-	Redirect stdout and stderr to log files
+	Redirect stdout and stderr to log files to standard brew path
+--with-tmp-logging
+	Redirect stdout and stderr to /tmp
 --without-border
 	Do not build border plugin.
 --without-ffm
@@ -40,6 +42,9 @@ has been granted, the application must be restarted:
 ```
 brew services restart chunkwm
 ```
+
+If both ```--with-logging``` and ```--with-tmp-logging``` are specified, the former takes
+precedence over the latter.
 
 ### Codesign chunkwm binary
 Accessibility API must be granted after every update to chunkwm, unless you codesign the
@@ -98,4 +103,9 @@ brew install --HEAD chunkwm
 ### Do not install border, tiling, and ffm plugins
 ```
 brew install --without-border --without-tiling --without-ffm chunkwm
+```
+
+### Log chunkwm stdout and stderr on /tmp
+```
+brew install --with-tmp-logging chunkwm
 ```
