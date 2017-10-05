@@ -16,9 +16,11 @@ Chunkwm works with MacOSX >= 10.11
 ## Brew options
 ```
 --with-logging
-	Redirect stdout and stderr to log files to standard brew path
+	Redirect stdout and stderr to log files to standard brew path.
+--with-purify
+    Build purify plugin.
 --with-tmp-logging
-	Redirect stdout and stderr to /tmp
+	Redirect stdout and stderr to /tmp.
 --without-border
 	Do not build border plugin.
 --without-ffm
