@@ -1,8 +1,8 @@
 class Chunkwm < Formula
   desc "Tiling window manager for macOS based on plugin architecture"
   homepage "https://github.com/koekeishiya/chunkwm"
-  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.34.tar.gz"
-  sha256 "bdfbd87fb1581eebdee46aa7e54d3660478ae896cdeea8e94741b573a2bcaf4b"
+  url "https://github.com/koekeishiya/chunkwm/archive/v0.2.35.tar.gz"
+  sha256 "87d2f25b39a57eec539b626ce48f206fe86a092457aaba2476f2dcee01588f3b"
   head "https://github.com/koekeishiya/chunkwm.git"
 
   option "without-tiling", "Do not build tiling plugin."
