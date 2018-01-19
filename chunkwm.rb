@@ -46,7 +46,7 @@ class Chunkwm < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<~EOS
     Copy the example configuration into your home directory:
       cp #{opt_pkgshare}/examples/chunkwmrc ~/.chunkwmrc
 
@@ -72,7 +72,7 @@ class Chunkwm < Formula
   plist_options :manual => "chunkwm"
 
   if build.with? "logging"
-    def plist; <<-EOS.undent
+    def plist; <<~EOS
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -101,7 +101,7 @@ class Chunkwm < Formula
       EOS
     end
   elsif build.with? "tmp-logging"
-    def plist; <<-EOS.undent
+    def plist; <<~EOS
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -130,7 +130,7 @@ class Chunkwm < Formula
       EOS
     end
   else
-    def plist; <<-EOS.undent
+    def plist; <<~EOS
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
