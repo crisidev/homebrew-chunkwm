@@ -8,6 +8,7 @@ Homebrew Tap for Chunkwm tiling window manager (https://github.com/koekeishiya/c
 2. [Brew Options](#brew-options)
 2. [Caveats](#caveats)
 3. [Usage examples](#usage-examples)
+4. [Plugins](#plugins)
 
 
 ## Supported OSX versions
@@ -110,4 +111,14 @@ brew install --without-border --without-tiling --without-ffm chunkwm
 ### Log chunkwm stdout and stderr on /tmp
 ```
 brew install --with-tmp-logging chunkwm
+```
+
+## Plugins
+In the repo I am also distributing other chunkwm plugins.
+
+### Chunkwm Blur - https://github.com/splintah/blur
+Blur wallpaper when there are open windows.
+
+```
+brew install --HEAD chunkwm-blur
 ```
