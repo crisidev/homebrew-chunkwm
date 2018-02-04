@@ -1,5 +1,5 @@
 class ChunkwmBlur < Formula
-  desc "A chunkwm plugin that blurs your wallpaper when you have open windows"
+  desc "Chunkwm plugin that blurs your wallpaper"
   homepage "https://github.com/splintah/blur"
   head "https://github.com/splintah/blur.git"
 
@@ -14,13 +14,16 @@ class ChunkwmBlur < Formula
   end
 
   def caveats; <<~EOS
-    The plugins install folder is #{opt_pkgshare}/plugins
-
-    To activate the plugin, edit your ~/.chunkwmrc and add this load line:
-      chunkc core::load #{opt_pkgshare}/plugins/blur.so
+    The plugins install folder is #{opt_pkgshare}/plugins.
 
     Unfortunately since formulas are standalone in brew, we cannot just use chunkwm
     standard plugin dir.
+
+    Because of this, the plugin needs to be symlinked to the chunkwm plugin folder:
+      ln -sf #{opt_pkgshare}/plugins/blur.so /usr/local/opt/chunkwm/share/chunkwm/plugins/blur.so
+
+    To activate the plugin, edit your ~/.chunkwmrc and add this load line:
+      chunkc core::load blur.so
 
     Given the dependency on chunkwm headers to build this plugin, the formula is HEAD only.
     EOS
