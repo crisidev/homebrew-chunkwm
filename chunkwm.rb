@@ -11,6 +11,7 @@ class Chunkwm < Formula
   option "with-purify", "Build purify plugin."
   option "with-logging", "Deprecated, here for backward compatibility, does not have effect."
   option "with-tmp-logging", "Deprecated, here for backward compatibility, does not have effect."
+  option "without-completions", "Do not install completions."
 
   depends_on :macos => :el_capitan
 
@@ -43,6 +44,10 @@ class Chunkwm < Formula
     if build.with? "purify"
       system "make", "install", "--directory", "src/plugins/purify"
       (pkgshare/"plugins").install "#{buildpath}/plugins/purify.so"
+    end
+
+    if build.with? "completions"
+        zsh_completion.install "src/completions/_chunkc"
     end
   end
 
